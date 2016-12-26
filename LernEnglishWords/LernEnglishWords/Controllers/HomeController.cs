@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using LernEnglishWords.Models;
 using System.Data.Entity;
+using System.Text.RegularExpressions;
 
 namespace LernEnglishWords.Controllers
 {
@@ -29,12 +30,6 @@ namespace LernEnglishWords.Controllers
             return View();
         }
 
-        public ActionResult Temp()
-        {
-            ViewBag.Message = "Your contact page.";
-            return View();
-        }
-
         // Метод со всеми видами манипуляций с данными
         private void Test()
         {
@@ -46,7 +41,7 @@ namespace LernEnglishWords.Controllers
 
             var EnglishWordTest = EnglishWords2
                 .Where(c => c.Word.StartsWith("TEST_WORD")).ToList();
-            foreach(EnglishWord b in EnglishWordTest)
+            foreach (EnglishWord b in EnglishWordTest)
             {
                 b.Word = "DELETE";
                 Repository.Update<EnglishWord>(b);
@@ -65,6 +60,6 @@ namespace LernEnglishWords.Controllers
                .Where(c => c.Word.StartsWith("TEST_WORD")).ToList();
             var EnglishWordDelete3 = EnglishWords4
                 .Where(c => c.Word.StartsWith("DELETE")).ToList();
-        }
+        }    
     }
 }
