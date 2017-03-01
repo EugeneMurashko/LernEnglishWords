@@ -1,4 +1,4 @@
-/*namespace LernEnglishWords.Models
+namespace LernEnglishWords.Models
 {
     using System;
     using System.Collections.Generic;
@@ -6,12 +6,12 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("EnglishWords")]
-    public partial class EnglishWord
+    public partial class EnglishWords
     {
-        public EnglishWord()
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public EnglishWords()
         {
-            Blocks = new List<Block>();
+            Blocks = new HashSet<Blocks>();
         }
 
         [Key]
@@ -27,6 +27,7 @@
         [Column(TypeName = "text")]
         public string Translate { get; set; }
 
-        public virtual ICollection<Block> Blocks { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Blocks> Blocks { get; set; }
     }
-}*/
+}

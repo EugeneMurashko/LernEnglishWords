@@ -5,24 +5,25 @@ namespace LernEnglishWords.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
 
-    public partial class LernEnglishContext : DbContext
+    public partial class Testing : DbContext
     {
-        public LernEnglishContext()
-            : base("name=LernEnglishContext")
+        public Testing()
+            : base("name=Testing")
         {
         }
 
+       /* public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
         public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
         public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
-        public virtual DbSet<Blocks> Blocks { get; set; }
         public virtual DbSet<EnglishWords> EnglishWords { get; set; }
-        public virtual DbSet<Progresses> Progresses { get; set; }
+        public virtual DbSet<Blocks> Blocks { get; set; }
+        public virtual DbSet<Progresses> Progresses { get; set; }*/
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AspNetRoles>()
+            /*modelBuilder.Entity<AspNetRoles>()
                 .HasMany(e => e.AspNetUsers)
                 .WithMany(e => e.AspNetRoles)
                 .Map(m => m.ToTable("AspNetUserRoles").MapLeftKey("RoleId").MapRightKey("UserId"));
@@ -37,10 +38,6 @@ namespace LernEnglishWords.Models
                 .WithRequired(e => e.AspNetUsers)
                 .HasForeignKey(e => e.UserId);
 
-            modelBuilder.Entity<Blocks>()
-                .HasOptional(e => e.Progresses)
-                .WithRequired(e => e.Blocks);
-
             modelBuilder.Entity<EnglishWords>()
                 .Property(e => e.Frequency)
                 .IsFixedLength()
@@ -53,7 +50,7 @@ namespace LernEnglishWords.Models
 
             modelBuilder.Entity<EnglishWords>()
                 .Property(e => e.Translate)
-                .IsUnicode(false);
+                .IsUnicode(false);*/
         }
     }
 }
