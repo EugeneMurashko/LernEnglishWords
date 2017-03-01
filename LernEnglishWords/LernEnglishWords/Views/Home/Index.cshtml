@@ -29,3 +29,19 @@
         <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
     </div>
 </div>
+<div class="row">
+        <div class="col-md-3"><p>BlockId</p></div>
+        <div class="col-md-3"><p>NamberBlock</p></div>
+        <div class="col-md-3"><p>Id</p></div>
+        <div class="col-md-3"><p>WordId</p></div>
+</div>
+<div class="row">
+    @foreach (LernEnglishWords.Models.Blocks block in ViewBag.Blocks)
+    {
+        <div class="col-md-3"><p>@block.BlockId</p></div>
+            <div class="col-md-3"><p>@block.NamberBlock</p></div>
+            <div class="col-md-3"><p>@block.Id</p></div>
+            <div class="col-md-3"><p>@block.WordId</p></div>
+    }
+</div>
+
