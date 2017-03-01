@@ -203,12 +203,37 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702191332023_TestingMigrations.cs" />
+    <Compile Include="Migrations\201702191332023_TestingMigrations.Designer.cs">
+      <DependentUpon>201702191332023_TestingMigrations.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702191721289_TestingMigrations1.cs" />
+    <Compile Include="Migrations\201702191721289_TestingMigrations1.Designer.cs">
+      <DependentUpon>201702191721289_TestingMigrations1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702191722158_TestingMigrations2.cs" />
+    <Compile Include="Migrations\201702191722158_TestingMigrations2.Designer.cs">
+      <DependentUpon>201702191722158_TestingMigrations2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AspNetRoles.cs" />
+    <Compile Include="Models\AspNetUserClaims.cs" />
+    <Compile Include="Models\AspNetUserLogins.cs" />
+    <Compile Include="Models\AspNetUsers.cs" />
+    <Compile Include="Models\Block.cs" />
+    <Compile Include="Models\Blocks.cs" />
+    <Compile Include="Models\C__MigrationHistory.cs" />
     <Compile Include="Models\EnglishWord.cs" />
+    <Compile Include="Models\EnglishWords.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\LernEnglishContext%28arhive%29.cs" />
     <Compile Include="Models\LernEnglishContext.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Progress.cs" />
+    <Compile Include="Models\Progresses.cs" />
     <Compile Include="Models\Repository.cs" />
+    <Compile Include="Models\Testing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -281,6 +306,17 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201702191332023_TestingMigrations.resx">
+      <DependentUpon>201702191332023_TestingMigrations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702191721289_TestingMigrations1.resx">
+      <DependentUpon>201702191721289_TestingMigrations1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702191722158_TestingMigrations2.resx">
+      <DependentUpon>201702191722158_TestingMigrations2.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
