@@ -1,0 +1,55 @@
+﻿@using Microsoft.AspNet.Identity
+@model LernEnglishWords.Models.Blocks
+
+@{
+    ViewBag.Title = "BlockList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>BlockList</h2>
+
+@using (Html.BeginForm(/*"Buy", "Home", FormMethod.Post*/)) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Blocks</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.NamberBlock, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NamberBlock, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NamberBlock, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Id, "Id", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("Id", (IEnumerable<SelectListItem>)ViewBag.UserList, htmlAttributes: new { @class = "form-control" })
+                @*Html.Hidden("Id", User.Identity.GetUserId())*@
+                @Html.ValidationMessageFor(model => model.Id, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.WordId, "WordId", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("WordId", (IEnumerable<SelectListItem>)ViewBag.EWList, htmlAttributes: new { @class = "form-control" })
+                @*Html.Hidden("WordId", 601)*@
+                @Html.ValidationMessageFor(model => model.WordId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

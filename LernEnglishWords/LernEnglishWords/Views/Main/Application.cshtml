@@ -1,0 +1,18 @@
+﻿@model LernEnglishWords.Models.WordFilter
+@{
+    ViewBag.Title = "Application";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Части речи:
+    <br />
+    @foreach (LernEnglishWords.Models.PartOfSpeech ps in Model.PartOfSpeech)
+    {
+        @ps.Name
+    }
+    </h2>
+
+<div id="App">
+    @{Html.RenderAction("App_TempName_First", "Main");}
+</div>
+

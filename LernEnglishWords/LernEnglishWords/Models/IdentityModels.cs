@@ -21,7 +21,7 @@ namespace LernEnglishWords.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("name=LernEnglishContext", throwIfV1Schema: false)
         {
         }
 

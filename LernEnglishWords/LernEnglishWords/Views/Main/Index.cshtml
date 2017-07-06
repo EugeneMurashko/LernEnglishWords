@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+        <div class="row">
+            <h2><a href="#" data-toggle="tooltip" data-placement="right" title="Расширенная!">Продолжить</a></h2>
+            @{Html.RenderAction("Continue", "Main");}
+            <div class="col-md-8">
+               <!-- <div class="jumbotron">-->
+                    <p class="lead">
+                        Текст текст текст текст текст <abbr title="Tag abbr">текст</abbr> текст текст текст текст текст текст текст 
+                        текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст 
+                        текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст текст
+                    </p>
+                <!-- </div>-->
+            </div>
+        </div>
+
+        <div class="row">
+            <h2><a href="#" data-toggle="tooltip" data-placement="right" title="Расширенная!">Шаблоны</a></h2>
+            @{Html.RenderAction("WordFiltres", "Main");}
+            
+        </div>
+
+        <div class="row">
+            <h2><a href="#" data-toggle="tooltip" data-placement="right" title="Расширенная!">Статистика</a></h2>
+            @{Html.RenderAction("Statistics", "Main");}
+        </div>
+
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+            $("#results").load("@Url.Action("Continue", "Main", new { userName = User.Identity.Name })");
+        });
+    </script>
+}
+
+
+

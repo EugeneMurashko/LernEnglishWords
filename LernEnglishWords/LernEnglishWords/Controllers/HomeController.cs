@@ -19,6 +19,7 @@ namespace LernEnglishWords.Controllers
     {
         public ActionResult Index()
         {
+            ViewBag.Blocks = Repository.Select<Blocks>().ToList();
             return View();
         }
 
@@ -32,9 +33,107 @@ namespace LernEnglishWords.Controllers
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
+            return View();
+        }
+
+        public ActionResult AddBlock()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddNewBlock(string UserId)
+        {
+            int thisnamberblock = Blocks.GetNumberBlock(UserId);
+            List<Blocks> blockList = Blocks.GetWordList(UserId, thisnamberblock, 3);
+
+            Repository.Inserts<Blocks>(blockList);
+            ViewBag.Info = "Имя пользователя: " + blockList[0].Id + "; Номер блока: " + blockList[0].NamberBlock.ToString() + "; Количество новых слов: " + blockList.Count().ToString() + ".";
+            return PartialView();
+        }
+
+        [HttpPost]
+        public ActionResult BlockSearch(string name)
+        {
+            var allblocks = Repository.Select<Blocks>().Where(a => a.AspNetUsers.UserName.Contains(name)).ToList();
+            if (allblocks.Count <= 0)
+            {
+                return HttpNotFound();
+            }
+            return PartialView(allblocks);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteBlock(string name, string id)
+        {
+            int idid = Convert.ToInt32(id);
+            var allblocks = Repository.Select<Blocks>()
+                .Where(a => a.AspNetUsers.UserName.Contains(name) && a.NamberBlock == idid)
+                .AsEnumerable()
+                .Select(a => new Blocks
+                {
+                    BlockId = a.BlockId
+                })
+                .ToList();
+            if (allblocks.Count <= 0)
+            {
+                return HttpNotFound();
+            }
+            Repository.Deletes<Blocks>(allblocks);
+
+
+            ViewBag.DeleteInfo = "Удалены слова пользователя: " + name + " из блока номер " + id + ".";
+            return PartialView();
+        }
+
+        
+        /*удалить*/
+        public ActionResult BlockList()
+        {
+            var AllEW = Repository.Select<EnglishWords>()
+                .AsEnumerable()
+                .ToList();
+
+            var AllUser = Repository.Select<AspNetUsers>()
+                .AsEnumerable()
+                .ToList();
+
+            var EWList = new List<SelectListItem>();
+            SelectList ewlist = new SelectList(AllEW);
+            EWList.AddRange(ewlist);
+            /*int col = 0;
+            foreach (EnglishWords englishword in AllEW)
+            {
+                EWList.Add(new SelectListItem
+                {
+                    Text = englishword.Word.ToString(),
+                    Value = englishword.Word.ToString()
+                });
+                col++;
+            }*/
+
+            
+            
+            var UserList = new List<SelectListItem>();
+            int col = 0;
+            foreach (AspNetUsers user in AllUser)
+            {
+                UserList.Add(new SelectListItem
+                {
+                    Text = user.UserName.ToString(),
+                    Value = user.UserName.ToString()
+                });
+                col++;
+            }
+
+            ViewBag.EWList = EWList;
+            ViewBag.UserList = UserList;
 
             return View();
         }
+
+
+
     }
     // когда бд не хочет мигрировать
     // использовать осторожно!!!

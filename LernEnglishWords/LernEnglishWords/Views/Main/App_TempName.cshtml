@@ -1,0 +1,79 @@
+﻿@model LernEnglishWords.Models.MyApplication
+
+@{ 
+    var percent = (int)((Model.Index + 1) * 100 / Model.ListOfWordList[Model.Cycle].Count);
+
+}
+
+<div class="row">
+    <div class="col-md-1">
+        <p class="text-info, text-center">@(Model.Index + 1)/@Model.ListOfWordList[Model.Cycle].Count</p>
+    </div>
+    <div class="col-md-10">
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="70"
+                 aria-valuemin="0" aria-valuemax="100" style="width:@percent%">
+                @percent%
+            </div>
+        </div>
+    </div>
+    <div class="col-md-1">
+        <p class="text-info, text-center">@(Model.Cycle + 1)/5</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <img src="http://placehold.it/100" />
+        <img src="http://placehold.it/100" />
+        <img src="http://placehold.it/100" />
+        <img src="http://placehold.it/100" />
+        <img src="http://placehold.it/100" />
+        <img src="http://placehold.it/100" />
+        <img src="http://placehold.it/100" />
+        <img src="http://placehold.it/100" />
+    </div>
+    <div class="col-md-4" style="margin-bottom:60px;">
+        <h1 class="text-center">@Model.CurrentWord.Word</h1>
+        <div class="center-block">
+            <div style="float: left; margin-right: 5px;">
+                @using (Ajax.BeginForm("App_TempName", new AjaxOptions { UpdateTargetId = "App" }))
+            {
+                    <input type="hidden" value="-1" name="result" />
+                    <p><input type="submit" class="btn btn-danger" value="Не знаю" /></p>
+                }
+            </div>
+            <div style="float: left; margin-right: 5px;">
+                @using (Ajax.BeginForm("App_TempName", new AjaxOptions { UpdateTargetId = "App" }))
+            {
+                    <input type="hidden" value="0" name="result" />
+                    <p><input type="submit" class="btn btn-warning" value="Сомневаюсь" /></p>
+                }
+            </div>
+            <div style="float: left;">
+                @using (Ajax.BeginForm("App_TempName", new AjaxOptions { UpdateTargetId = "App" }))
+            {
+                    <input type="hidden" value="1" name="result" />
+                    <p><input type="submit" class="btn btn-success" value="Знаю" /></p>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <ol>
+            <li>@Model.CurrentWord.Translate</li>
+            <li>слово</li>
+            <li>= words разговор, речь</li>
+            <li>замечание, высказывание</li>
+            <li>(words) размолвка, ссора</li>
+            <li>обещание, слово</li>
+            <li>вести; известие, сообщение</li>
+            <li>приказ, приказание, распоряжение, команда</li>
+            <li>пароль</li>
+            <li>девиз; лозунг</li>
+            <li>уст. поговорка, пословица</li>
+            <li>(the Word) рер.; = the Word of God Слово Божие, Библия (особенно Евангелие)</li>
+            <li>(words) текст (песни, роли), либретто (оперы, балета)</li>
+        </ol>
+    </div>
+</div>

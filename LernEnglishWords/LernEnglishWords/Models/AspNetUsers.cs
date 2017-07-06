@@ -15,6 +15,9 @@ namespace LernEnglishWords.Models
             AspNetUserLogins = new HashSet<AspNetUserLogins>();
             Blocks = new HashSet<Blocks>();
             AspNetRoles = new HashSet<AspNetRoles>();
+            Progresses_new = new HashSet<Progresses_new>();
+            WordFilter = new HashSet<WordFilter>();
+            HistoryOfExercises = new HashSet<HistoryOfExercises>();
         }
 
         public string Id { get; set; }
@@ -51,9 +54,11 @@ namespace LernEnglishWords.Models
         public virtual ICollection<AspNetUserLogins> AspNetUserLogins { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Blocks> Blocks { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AspNetRoles> AspNetRoles { get; set; }
+        public virtual ICollection<Blocks> Blocks { get; set; }
+        public virtual ICollection<Progresses_new> Progresses_new { get; set; }
+        public virtual ICollection<WordFilter> WordFilter { get; set; }
+        public virtual ICollection<HistoryOfExercises> HistoryOfExercises { get; set; }
+
     }
 }
