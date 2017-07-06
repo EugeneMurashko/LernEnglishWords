@@ -1,13 +1,29 @@
 ﻿@model LernEnglishWords.Models.MyApplication
 
 @{ 
-    var percent = (int)((Model.Index + 1) * 100 / Model.ListOfWordList[Model.Cycle].Count);
+    string percent = "";
+    string text1 = "";
+    string text2 = (Model.Cycle + 1).ToString() + " / 5";
+    if (Model.Cycle == 0)
+    {
+        percent = ((int)(Model.Index * 100 / (Model.Complexity - Model.WordListCycle1.Count + Model.Index))).ToString();
+        text1 = Model.Index.ToString() + " / " + (Model.Complexity - Model.WordListCycle1.Count + Model.Index).ToString();
+    }
+    else
+    {
+        percent = ((int)((Model.Index) * 100 / Model.ListOfWordList[Model.Cycle].Count)).ToString();
+        text1 = Model.Index.ToString() + " / " + Model.ListOfWordList[Model.Cycle].Count.ToString();
+    }
+
+
+
+
 
 }
 
 <div class="row">
     <div class="col-md-1">
-        <p class="text-info, text-center">@(Model.Index + 1)/@Model.ListOfWordList[Model.Cycle].Count</p>
+        <p class="text-info, text-center">@text1</p>
     </div>
     <div class="col-md-10">
         <div class="progress">
@@ -18,7 +34,7 @@
         </div>
     </div>
     <div class="col-md-1">
-        <p class="text-info, text-center">@(Model.Cycle + 1)/5</p>
+        <p class="text-info, text-center">@text2</p>
     </div>
 </div>
 
