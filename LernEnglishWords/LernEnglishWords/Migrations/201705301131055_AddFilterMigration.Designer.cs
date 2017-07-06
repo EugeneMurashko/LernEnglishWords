@@ -7,13 +7,13 @@ namespace LernEnglishWords.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class TestingMigrations1 : IMigrationMetadata
+    public sealed partial class AddFilterMigration : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(TestingMigrations1));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddFilterMigration));
         
         string IMigrationMetadata.Id
         {
-            get { return "201702191721289_TestingMigrations1"; }
+            get { return "201705301131055_AddFilterMigration"; }
         }
         
         string IMigrationMetadata.Source

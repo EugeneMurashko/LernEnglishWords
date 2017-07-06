@@ -1,0 +1,34 @@
+﻿@using Microsoft.AspNet.Identity
+@model LernEnglishWords.Models.Blocks
+@{
+    ViewBag.Title = "AddBlock Page";
+}
+
+<div class="row, jumbotron">
+    @using (Ajax.BeginForm("AddNewBlock", new AjaxOptions { UpdateTargetId = "results1" }))
+    {
+        <input type="hidden" value="@User.Identity.GetUserId()" name="UserId" />
+        <p><input type="submit" value="Добавить блок" /></p>
+    }
+    <div id="results1"></div>
+</div>
+    
+<div class="row, jumbotron">
+    @using (Ajax.BeginForm("DeleteBlock", new AjaxOptions { UpdateTargetId = "results2" }))
+    {
+        <input type="hidden" value="@User.Identity.GetUserName()" name="name" />
+        <input type="text" name="id" />
+
+        <p><input type="submit" value="Удалить блок" /></p>
+    }
+    <div id="results2"></div>
+</div>
+
+<div class="row, jumbotron">
+    @using (Ajax.BeginForm("BlockSearch", new AjaxOptions { UpdateTargetId = "results" }))
+    {
+        <input type="text" value="@User.Identity.GetUserName()" name="name" />
+        <p><input type="submit" value="Поиск" /></p>
+    }
+    <div id="results"></div>
+</div>

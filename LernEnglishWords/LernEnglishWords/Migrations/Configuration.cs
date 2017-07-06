@@ -5,14 +5,14 @@ namespace LernEnglishWords.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<LernEnglishWords.Models.Testing>
+    internal sealed class Configuration : DbMigrationsConfiguration<LernEnglishWords.Models.LernEnglishContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(LernEnglishWords.Models.Testing context)
+        protected override void Seed(LernEnglishWords.Models.LernEnglishContext context)
         {
             //  This method will be called after migrating to the latest version.
 

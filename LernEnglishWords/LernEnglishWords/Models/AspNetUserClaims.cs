@@ -6,19 +6,18 @@ namespace LernEnglishWords.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("EnglishWord")]
-    public partial class EnglishWord
+    public partial class AspNetUserClaims
     {
         public int Id { get; set; }
 
-        [StringLength(8)]
-        public string Frequency { get; set; }
-
         [Required]
-        [StringLength(64)]
-        public string Word { get; set; }
+        [StringLength(128)]
+        public string UserId { get; set; }
 
-        [Column(TypeName = "text")]
-        public string Translate { get; set; }
+        public string ClaimType { get; set; }
+
+        public string ClaimValue { get; set; }
+
+        public virtual AspNetUsers AspNetUsers { get; set; }
     }
 }

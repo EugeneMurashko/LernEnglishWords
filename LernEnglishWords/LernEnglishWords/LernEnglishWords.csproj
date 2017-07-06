@@ -199,16 +199,59 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705260525140_AddProgresses_newMigration.cs" />
+    <Compile Include="Migrations\201705260525140_AddProgresses_newMigration.Designer.cs">
+      <DependentUpon>201705260525140_AddProgresses_newMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705260526555_AddProgresses_newMigration1.cs" />
+    <Compile Include="Migrations\201705260526555_AddProgresses_newMigration1.Designer.cs">
+      <DependentUpon>201705260526555_AddProgresses_newMigration1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705260540089_AddProgresses_newMigration2.cs" />
+    <Compile Include="Migrations\201705260540089_AddProgresses_newMigration2.Designer.cs">
+      <DependentUpon>201705260540089_AddProgresses_newMigration2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705260547435_AddProgresses_newMigration3.cs" />
+    <Compile Include="Migrations\201705260547435_AddProgresses_newMigration3.Designer.cs">
+      <DependentUpon>201705260547435_AddProgresses_newMigration3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705260550178_AddProgresses_newMigration4.cs" />
+    <Compile Include="Migrations\201705260550178_AddProgresses_newMigration4.Designer.cs">
+      <DependentUpon>201705260550178_AddProgresses_newMigration4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201705301131055_AddFilterMigration.cs" />
+    <Compile Include="Migrations\201705301131055_AddFilterMigration.Designer.cs">
+      <DependentUpon>201705301131055_AddFilterMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706051222147_CategoryAndPartOfSpeach.cs" />
+    <Compile Include="Migrations\201706051222147_CategoryAndPartOfSpeach.Designer.cs">
+      <DependentUpon>201706051222147_CategoryAndPartOfSpeach.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\EnglishWord.cs" />
+    <Compile Include="Models\MyApplication.cs" />
+    <Compile Include="Models\AspNetRoles.cs" />
+    <Compile Include="Models\AspNetUserClaims.cs" />
+    <Compile Include="Models\AspNetUserLogins.cs" />
+    <Compile Include="Models\AspNetUsers.cs" />
+    <Compile Include="Models\Blocks.cs" />
+    <Compile Include="Models\EnglishWords.cs" />
+    <Compile Include="Models\HistoryOfExercises.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\LernEnglishContext.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\PartOfSpeech.cs" />
+    <Compile Include="Models\Progresses.cs" />
+    <Compile Include="Models\Progresses_new.cs" />
     <Compile Include="Models\Repository.cs" />
+    <Compile Include="Models\Temp.cs" />
+    <Compile Include="Models\WordFilter.cs" />
+    <Compile Include="Models\СategoryOfWord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -228,6 +271,8 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -235,8 +280,11 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\Temp.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -270,6 +318,17 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Home\AddBlock.cshtml" />
+    <Content Include="Views\Home\BlockSearch.cshtml" />
+    <Content Include="Views\Home\AddNewBlock.cshtml" />
+    <Content Include="Views\Home\DeleteBlock.cshtml" />
+    <Content Include="Views\Home\BlockList.cshtml" />
+    <Content Include="Views\Main\Index.cshtml" />
+    <Content Include="Views\Main\Application.cshtml" />
+    <Content Include="Views\Main\Continue.cshtml" />
+    <Content Include="Views\Main\WordFiltres.cshtml" />
+    <Content Include="Views\Main\Statistics.cshtml" />
+    <Content Include="Views\Main\App_TempName.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -281,6 +340,30 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201705260525140_AddProgresses_newMigration.resx">
+      <DependentUpon>201705260525140_AddProgresses_newMigration.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705260526555_AddProgresses_newMigration1.resx">
+      <DependentUpon>201705260526555_AddProgresses_newMigration1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705260540089_AddProgresses_newMigration2.resx">
+      <DependentUpon>201705260540089_AddProgresses_newMigration2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705260547435_AddProgresses_newMigration3.resx">
+      <DependentUpon>201705260547435_AddProgresses_newMigration3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705260550178_AddProgresses_newMigration4.resx">
+      <DependentUpon>201705260550178_AddProgresses_newMigration4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705301131055_AddFilterMigration.resx">
+      <DependentUpon>201705301131055_AddFilterMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706051222147_CategoryAndPartOfSpeach.resx">
+      <DependentUpon>201706051222147_CategoryAndPartOfSpeach.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
