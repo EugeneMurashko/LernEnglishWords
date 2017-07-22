@@ -37,7 +37,7 @@ namespace LernEnglishWords.Controllers
 
 
         [HttpPost]
-        public string WordFiltres(string[] countries, string[] countries1)
+        public string AddNewFilter(string[] countries, string[] countries1)
         {
             string result = "";
             foreach (string c in countries)
@@ -52,6 +52,12 @@ namespace LernEnglishWords.Controllers
                 result += ";";
             }
             return "Вы выбрали: " + result;
+        }
+
+        public ActionResult AddNewFilter()
+        {
+            
+            return PartialView();
         }
 
         // Выводит все шаблоны добавленные пользователем
@@ -113,12 +119,6 @@ namespace LernEnglishWords.Controllers
 
             return PartialView(wordFList);
         }
-
-        public ActionResult AddNewFilter()
-        {
-            return PartialView();
-        }
-        
 
         // soon
         public ActionResult Statistics()
