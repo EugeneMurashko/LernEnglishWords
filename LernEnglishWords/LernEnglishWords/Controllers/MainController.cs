@@ -35,6 +35,25 @@ namespace LernEnglishWords.Controllers
             return PartialView(/*new List<WordFiltres>()*/);
         }
 
+
+        [HttpPost]
+        public string WordFiltres(string[] countries, string[] countries1)
+        {
+            string result = "";
+            foreach (string c in countries)
+            {
+                result += c;
+                result += "; ";
+            }
+            result += " и ";
+            foreach (string c in countries1)
+            {
+                result += c;
+                result += ";";
+            }
+            return "Вы выбрали: " + result;
+        }
+
         // Выводит все шаблоны добавленные пользователем
 
         // Добавить позможность добавить новый шаблон
@@ -56,7 +75,12 @@ namespace LernEnglishWords.Controllers
                         _ps = o.PartOfSpeech.Select(k=> new
                         {
                             _name = k.Name
+                        }),
+                        _cow = o.CategoryOfWord.Select(l=> new
+                        {
+                            _name = l.Name
                         })
+
                     })
                 })
                 .AsEnumerable()
@@ -70,7 +94,13 @@ namespace LernEnglishWords.Controllers
                         {
                             Name = k._name
                         })
-                        .ToList()
+                        .ToList(),
+                         CategoryOfWord = o._cow.Select(l=> new CategoryOfWord
+                         {
+                             Name = l._name
+                         })
+                         .ToList()
+                        
                     })
                     .ToList()
                 })
@@ -79,8 +109,14 @@ namespace LernEnglishWords.Controllers
                 .FirstOrDefault();
 
             List<WordFilter> wordFList = _User.WordFilter.ToList();
+                
 
             return PartialView(wordFList);
+        }
+
+        public ActionResult AddNewFilter()
+        {
+            return PartialView();
         }
         
 
