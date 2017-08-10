@@ -56,8 +56,10 @@ namespace LernEnglishWords.Controllers
 
         public ActionResult AddNewFilter()
         {
-            
-            return PartialView();
+            ViewBag.PartOfSpeech = Repository.Select<PartOfSpeech>().ToList();
+
+            List<CategoryOfWord> COWList = Repository.Select<CategoryOfWord>().ToList();
+            return PartialView(COWList);
         }
 
         // Выводит все шаблоны добавленные пользователем

@@ -83,6 +83,45 @@ namespace LernEnglishWords.Models
                 .HasMany(e => e.HistoryOfExercises)
                 .WithRequired(e => e.WordFilter);
 
+            modelBuilder.Entity<PartOfSpeech>()
+                .HasMany(s => s.EnglishWords)
+                .WithMany(c => c.PartOfSpeech)
+                .Map(cs =>
+                {
+                    cs.MapLeftKey("PartOfSpeechRefId");
+                    cs.MapRightKey("EnWordRefId");
+                    cs.ToTable("PartOfSpeechEnWord");
+                });
+
+            modelBuilder.Entity<CategoryOfWord>()
+                .HasMany(s => s.EnglishWords)
+                .WithMany(c => c.CategoryOfWord)
+                .Map(cs =>
+                {
+                    cs.MapLeftKey("CategoryOfWordRefId");
+                    cs.MapRightKey("EnWordRefId");
+                    cs.ToTable("CategoryOfWordEnWord");
+                });
+
+            modelBuilder.Entity<PartOfSpeech>()
+                .HasMany(s => s.WordFilter)
+                .WithMany(c => c.PartOfSpeech)
+                .Map(cs =>
+                {
+                    cs.MapLeftKey("PartOfSpeechRefId");
+                    cs.MapRightKey("FilterRefId");
+                    cs.ToTable("PartOfSpeechWFilter");
+                });
+
+            modelBuilder.Entity<CategoryOfWord>()
+                .HasMany(s => s.WordFilter)
+                .WithMany(c => c.CategoryOfWord)
+                .Map(cs =>
+                {
+                    cs.MapLeftKey("CategoryOfWordRefId");
+                    cs.MapRightKey("FilterRefId");
+                    cs.ToTable("CategoryOfWordWFilter");
+                });
         }
     }
 }

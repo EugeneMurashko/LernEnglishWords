@@ -1,4 +1,18 @@
-﻿    <!-- Modal -->
+﻿    @model List<LernEnglishWords.Models.CategoryOfWord>
+        @{ 
+            List<string> POS = new List<string>();
+            foreach (var pos in ViewBag.PartOfSpeech)
+            {
+                POS.Add(pos.Name);
+            }
+
+            List<string> COW = new List<string>();
+            foreach (var cow in Model)
+            {
+                COW.Add(cow.Name);
+            }
+        }
+    <!-- Modal -->
     <div id="myModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
@@ -13,7 +27,7 @@
                     <div class="row">
                         <div class="col-xs-5">
                             <div class="form-group">
-                                @Html.ListBox("countries", new MultiSelectList(new string[] { "Россия", "США", "Китай", "Индия" }),
+                                @Html.ListBox("countries", new MultiSelectList(POS),
                                     new
                                     {
                                         @class = "selectpicker",
@@ -27,7 +41,7 @@
                     <div class="row">
                         <div class="col-xs-5">
                             <div class="form-group">
-                                @Html.ListBox("countries1", new MultiSelectList(new string[] { "Россия", "США", "Китай", "Индия" }/* ViewBag.CategoryOfWord as SelectList*/),
+                                @Html.ListBox("countries1", new MultiSelectList(COW /* ViewBag.CategoryOfWord as SelectList*/),
                                     new
                                     {
                                         @class = "selectpicker",

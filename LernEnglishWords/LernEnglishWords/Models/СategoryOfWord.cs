@@ -12,9 +12,9 @@
             EnglishWords = new HashSet<EnglishWords>();
             WordFilter = new HashSet<WordFilter>();
         }
-        public virtual int Id { get; set; }
+        public int Id { get; set; }
         [Required]
-        public virtual string Name { get; set; }
+        public string Name { get; set; }
         public virtual ICollection<EnglishWords> EnglishWords { get; set; }
         public virtual ICollection<WordFilter> WordFilter { get; set; }
     }

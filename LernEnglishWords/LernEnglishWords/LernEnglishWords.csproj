@@ -232,6 +232,14 @@
     <Compile Include="Migrations\201706051222147_CategoryAndPartOfSpeach.Designer.cs">
       <DependentUpon>201706051222147_CategoryAndPartOfSpeach.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201708071458220_POSandCOW.cs" />
+    <Compile Include="Migrations\201708071458220_POSandCOW.Designer.cs">
+      <DependentUpon>201708071458220_POSandCOW.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708071503532_COWandPOSwhithFilter.cs" />
+    <Compile Include="Migrations\201708071503532_COWandPOSwhithFilter.Designer.cs">
+      <DependentUpon>201708071503532_COWandPOSwhithFilter.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\MyApplication.cs" />
@@ -442,6 +450,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706051222147_CategoryAndPartOfSpeach.resx">
       <DependentUpon>201706051222147_CategoryAndPartOfSpeach.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708071458220_POSandCOW.resx">
+      <DependentUpon>201708071458220_POSandCOW.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708071503532_COWandPOSwhithFilter.resx">
+      <DependentUpon>201708071503532_COWandPOSwhithFilter.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
