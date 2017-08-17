@@ -11,7 +11,7 @@ namespace LernEnglishWords.Controllers
 {
     public class MainController : Controller
     {
-        // Перенаправить на авторизацию
+        [HttpGet]
         [Authorize]
         public ActionResult Index()
         {
@@ -36,30 +36,30 @@ namespace LernEnglishWords.Controllers
         }
 
 
+        // ERROR возникает, когда завершается работа приложения. почему-то вызывается именно в этот метод, но countries, countries1 ведь пусты.
         [HttpPost]
-        public string AddNewFilter(string[] countries, string[] countries1)
+        public ActionResult AddNewFilter(string[] countries, string[] countries1)
         {
-            string result = "";
-            foreach (string c in countries)
+            if(countries ==null || countries1 == null) // Заглушка
             {
-                result += c;
-                result += "; ";
+                ViewBag.PartOfSpeech = Repository.Select<PartOfSpeech>().ToList();
+                ViewBag.CategoryOfWord = Repository.Select<CategoryOfWord>().ToList();
+
+                return PartialView();
             }
-            result += " и ";
-            foreach (string c in countries1)
-            {
-                result += c;
-                result += ";";
-            }
-            return "Вы выбрали: " + result;
+                
+
+            // Здесь мы создаем новый фильтр
+            // и добавляем его в бд
+            return PartialView();
         }
 
         public ActionResult AddNewFilter()
         {
             ViewBag.PartOfSpeech = Repository.Select<PartOfSpeech>().ToList();
+            ViewBag.CategoryOfWord = Repository.Select<CategoryOfWord>().ToList();
 
-            List<CategoryOfWord> COWList = Repository.Select<CategoryOfWord>().ToList();
-            return PartialView(COWList);
+            return PartialView();
         }
 
         // Выводит все шаблоны добавленные пользователем
@@ -141,7 +141,7 @@ namespace LernEnglishWords.Controllers
 
             // Отправляем выбрать упражнение
             if (app.WordFilter == 0)
-                return View("Index");
+                return RedirectToAction("Index");
 
             WordFilter wFilter = Repository.Select<WordFilter>() // Создать отдельный метод в репозитории RepositoryWordFilter.SelectWithPartOfSpeechAndCategoryOfWord
                     .Where(c => c.Id == app.WordFilter)

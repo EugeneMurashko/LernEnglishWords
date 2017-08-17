@@ -1,5 +1,4 @@
-﻿    @model List<LernEnglishWords.Models.CategoryOfWord>
-        @{ 
+﻿        @{ 
             List<string> POS = new List<string>();
             foreach (var pos in ViewBag.PartOfSpeech)
             {
@@ -7,7 +6,7 @@
             }
 
             List<string> COW = new List<string>();
-            foreach (var cow in Model)
+            foreach (var cow in ViewBag.CategoryOfWord)
             {
                 COW.Add(cow.Name);
             }
