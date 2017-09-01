@@ -92,51 +92,44 @@ namespace LernEnglishWords.Controllers
                 if(!found)
                 {
 
-                    /*using (var preNewContext = new LernEnglishContext())
+                    using (var preNewContext = new LernEnglishContext())
                     {
                         preNewContext.WordFilter.Add(Filter);
                         preNewContext.SaveChanges();
-                    }*/
-
-                    
-                    Filter = filterList
-                        .Where(f => f.Id == 16)
-                        .FirstOrDefault();
-                    
-
+                    }
 
                     string user_id = User.Identity.GetUserId();
                     using (var context = new LernEnglishContext())
                     {
-                        Filter.AspNetUsers.Add(
-                            context.AspNetUsers
+                        context.Configuration.ProxyCreationEnabled = false;
+
+                        AspNetUsers _User = context.AspNetUsers
                             .Where(u => u.Id == user_id)
-                            .FirstOrDefault()
-                            );
+                            .FirstOrDefault();
+                        _User.WordFilter.Add(Filter);
+                        context.Entry<AspNetUsers>(_User).State = EntityState.Modified;
+                        context.SaveChanges();
+
 
                         foreach (var _cow in COWs)
                         {
-                            Filter.CategoryOfWord.Add(
-                                context.CategoryOfWord
+                            CategoryOfWord _CategoryOfWord = context.CategoryOfWord
                                 .Where(c => c.Name == _cow)
-                                .FirstOrDefault()
-                                );
+                                .FirstOrDefault();
+                            _CategoryOfWord.WordFilter.Add(Filter);
+                            context.Entry<CategoryOfWord>(_CategoryOfWord).State = EntityState.Modified;
+                            context.SaveChanges();
                         }
 
                         foreach (var _pos in POSs)
                         {
-                            Filter.PartOfSpeech.Add(
-                                context.PartOfSpeech
+                            PartOfSpeech _PartOfSpeech = context.PartOfSpeech
                                 .Where(c => c.Name == _pos)
-                                .FirstOrDefault()
-                                );
+                                .FirstOrDefault();
+                            _PartOfSpeech.WordFilter.Add(Filter);
+                            context.Entry<PartOfSpeech>(_PartOfSpeech).State = EntityState.Modified;
+                            context.SaveChanges();
                         }
-                    }
-                    
-                    using (var newContext = new LernEnglishContext())
-                    {
-                        newContext.Entry(Filter).State = EntityState.Modified;
-                        newContext.SaveChanges();
                     }
                 }
                 else
