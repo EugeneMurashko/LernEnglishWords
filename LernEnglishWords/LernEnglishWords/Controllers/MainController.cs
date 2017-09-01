@@ -92,13 +92,23 @@ namespace LernEnglishWords.Controllers
                 if(!found)
                 {
 
-                    List<AspNetUsers> _user = new List<AspNetUsers>();
+                    /*using (var preNewContext = new LernEnglishContext())
+                    {
+                        preNewContext.WordFilter.Add(Filter);
+                        preNewContext.SaveChanges();
+                    }*/
+
+                    
+                    Filter = filterList
+                        .Where(f => f.Id == 16)
+                        .FirstOrDefault();
+                    
+
+
                     string user_id = User.Identity.GetUserId();
-                    List<CategoryOfWord> _cowList = new List<CategoryOfWord>();
-                    List<PartOfSpeech> _posList = new List<PartOfSpeech>();
                     using (var context = new LernEnglishContext())
                     {
-                        _user.Add(
+                        Filter.AspNetUsers.Add(
                             context.AspNetUsers
                             .Where(u => u.Id == user_id)
                             .FirstOrDefault()
@@ -106,7 +116,7 @@ namespace LernEnglishWords.Controllers
 
                         foreach (var _cow in COWs)
                         {
-                            _cowList.Add(
+                            Filter.CategoryOfWord.Add(
                                 context.CategoryOfWord
                                 .Where(c => c.Name == _cow)
                                 .FirstOrDefault()
@@ -115,23 +125,13 @@ namespace LernEnglishWords.Controllers
 
                         foreach (var _pos in POSs)
                         {
-                            _posList.Add(
+                            Filter.PartOfSpeech.Add(
                                 context.PartOfSpeech
                                 .Where(c => c.Name == _pos)
                                 .FirstOrDefault()
                                 );
                         }
                     }
-
-                    using (var preNewContext = new LernEnglishContext())
-                    {
-                        preNewContext.WordFilter.Add(Filter);
-                        preNewContext.SaveChanges();
-                    }
-
-                    Filter.AspNetUsers = _user;
-                    Filter.CategoryOfWord = _cowList;
-                    Filter.PartOfSpeech = _posList;
                     
                     using (var newContext = new LernEnglishContext())
                     {
