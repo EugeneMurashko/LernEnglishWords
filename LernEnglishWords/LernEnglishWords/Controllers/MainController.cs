@@ -11,7 +11,6 @@ namespace LernEnglishWords.Controllers
 {
     public class MainController : Controller
     {
-        [HttpGet]
         [Authorize]
         public ActionResult Index()
         {
@@ -19,6 +18,154 @@ namespace LernEnglishWords.Controllers
                 Session["Application"] = MyApplication.GetReference(User.Identity.GetUserId());
             return View();
         }
+
+        // 1.   При перезагрузке вызывается именно этот метод.
+        // 1.1. Описать проверку, обходящую повторный запрос к БД.
+        [HttpPost]
+        public ActionResult Index(string[] POSs, string[] COWs)
+        {
+            if (Session["Application"] as MyApplication == null)
+                Session["Application"] = MyApplication.GetReference(User.Identity.GetUserId());
+
+            if (POSs != null && COWs != null)
+            {
+                List<CategoryOfWord> COWList;
+                List<PartOfSpeech> POSList;
+                using (var context = new LernEnglishContext())
+                {
+                    COWList = context.CategoryOfWord
+                        .ToList();
+                    POSList = context.PartOfSpeech
+                        .ToList();
+                }
+
+                List<string> pos = new List<string>();
+                foreach (var s in POSs)
+                {
+                    pos.Add(s);
+                }
+
+                List<string> cow = new List<string>();
+                foreach (var s in COWs)
+                {
+                    cow.Add(s);
+                }
+
+                List<WordFilter> filterList = new List<WordFilter>();
+                using (var context = new LernEnglishContext())
+                {
+                    context.Configuration.ProxyCreationEnabled = false;
+
+                    filterList = context.WordFilter
+                        .Include(e => e.CategoryOfWord)
+                        .Include(p => p.PartOfSpeech)
+                        .ToList();
+                }
+
+                bool found = false;
+                WordFilter Filter = new WordFilter();
+                foreach (var filter in filterList)
+                {
+                    List<string> s = new List<string>();
+                    foreach (var p in filter.PartOfSpeech)
+                    {
+                        s.Add(p.Name);
+                    }
+                    if (!s.SequenceEqual(pos))
+                    {
+                        continue;
+                    }
+
+                    s.Clear();
+                    foreach (var p in filter.CategoryOfWord)
+                    {
+                        s.Add(p.Name);
+                    }
+                    if (s.SequenceEqual(cow))
+                    {
+                        Filter = filter;
+                        found = true;
+                        break;
+                    }
+                }
+
+                if(!found)
+                {
+
+                    List<AspNetUsers> _user = new List<AspNetUsers>();
+                    string user_id = User.Identity.GetUserId();
+                    List<CategoryOfWord> _cowList = new List<CategoryOfWord>();
+                    List<PartOfSpeech> _posList = new List<PartOfSpeech>();
+                    using (var context = new LernEnglishContext())
+                    {
+                        _user.Add(
+                            context.AspNetUsers
+                            .Where(u => u.Id == user_id)
+                            .FirstOrDefault()
+                            );
+
+                        foreach (var _cow in COWs)
+                        {
+                            _cowList.Add(
+                                context.CategoryOfWord
+                                .Where(c => c.Name == _cow)
+                                .FirstOrDefault()
+                                );
+                        }
+
+                        foreach (var _pos in POSs)
+                        {
+                            _posList.Add(
+                                context.PartOfSpeech
+                                .Where(c => c.Name == _pos)
+                                .FirstOrDefault()
+                                );
+                        }
+                    }
+
+                    using (var preNewContext = new LernEnglishContext())
+                    {
+                        preNewContext.WordFilter.Add(Filter);
+                        preNewContext.SaveChanges();
+                    }
+
+                    Filter.AspNetUsers = _user;
+                    Filter.CategoryOfWord = _cowList;
+                    Filter.PartOfSpeech = _posList;
+                    
+                    using (var newContext = new LernEnglishContext())
+                    {
+                        newContext.Entry(Filter).State = EntityState.Modified;
+                        newContext.SaveChanges();
+                    }
+                }
+                else
+                {
+                    List<AspNetUsers> _user = new List<AspNetUsers>();
+                    string user_id = User.Identity.GetUserId();
+                    using (var context = new LernEnglishContext())
+                    {
+                        _user.Add(
+                            context.AspNetUsers
+                            .Where(u => u.Id == user_id)
+                            .FirstOrDefault()
+                            );
+                    }
+                    Filter.AspNetUsers = _user;
+
+                    using (var newContext = new LernEnglishContext())
+                    {
+                        newContext.Entry(Filter).State = EntityState.Modified;
+                        newContext.SaveChanges();
+                    }
+                }
+
+                // Отправляем в БД
+            }
+            return View("Index");
+        }
+
+
 
         // Выводить недавние фильтры, либо один - последний
         // Скопировать логику с WordFiltres
@@ -35,36 +182,26 @@ namespace LernEnglishWords.Controllers
             return PartialView(/*new List<WordFiltres>()*/);
         }
 
-
-        // ERROR возникает, когда завершается работа приложения. почему-то вызывается именно в этот метод, но countries, countries1 ведь пусты.
-        [HttpPost]
-        public ActionResult AddNewFilter(string[] countries, string[] countries1)
+        private bool checkData(int id, List<PartOfSpeech> POS, string[] poss)
         {
-            if(countries ==null || countries1 == null) // Заглушка
-            {
-                ViewBag.PartOfSpeech = Repository.Select<PartOfSpeech>().ToList();
-                ViewBag.CategoryOfWord = Repository.Select<CategoryOfWord>().ToList();
-
-                return PartialView();
-            }
-                
-
-            // Здесь мы создаем новый фильтр
-            // и добавляем его в бд
-            return PartialView();
+            throw new NotImplementedException();
+        }
+        private bool checkData(int id, List<CategoryOfWord> COW, string[] cows)
+        {
+            throw new NotImplementedException();
         }
 
         public ActionResult AddNewFilter()
         {
-            ViewBag.PartOfSpeech = Repository.Select<PartOfSpeech>().ToList();
-            ViewBag.CategoryOfWord = Repository.Select<CategoryOfWord>().ToList();
-
+            using(var context = new LernEnglishContext())
+            {
+                ViewBag.PartOfSpeech = context.PartOfSpeech.ToList();
+                ViewBag.CategoryOfWord = context.CategoryOfWord.ToList();
+            }
             return PartialView();
         }
 
         // Выводит все шаблоны добавленные пользователем
-
-        // Добавить позможность добавить новый шаблон
         [Authorize]
         public ActionResult WordFiltres()
         {
@@ -169,7 +306,7 @@ namespace LernEnglishWords.Controllers
             return View(wFilter);
         }
 
-        // Научить продолжать тренировку
+        // Тренировка продолжается, но с ошибкой в счетчике
         [Authorize]
         [HttpPost]
         public ActionResult Application(int WordFilterId) // FilterId
