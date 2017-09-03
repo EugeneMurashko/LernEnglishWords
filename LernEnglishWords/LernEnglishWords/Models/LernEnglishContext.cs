@@ -16,9 +16,7 @@ namespace LernEnglishWords.Models
         public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
-        public virtual DbSet<Blocks> Blocks { get; set; }
         public virtual DbSet<EnglishWords> EnglishWords { get; set; }
-        public virtual DbSet<Progresses> Progresses { get; set; }
         public virtual DbSet<Progresses_new> Progresses_new { get; set; }
         public virtual DbSet<HistoryOfExercises> HistoryOfExercices { get; set; }
         public virtual DbSet<WordFilter> WordFilter { get; set; }
@@ -53,10 +51,6 @@ namespace LernEnglishWords.Models
             modelBuilder.Entity<AspNetUsers>()
                 .HasMany(e => e.HistoryOfExercises)
                 .WithRequired(e => e.User);
-
-            modelBuilder.Entity<Blocks>()
-                .HasOptional(e => e.Progresses)
-                .WithRequired(e => e.Blocks);
 
             modelBuilder.Entity<EnglishWords>()
                 .Property(e => e.Frequency)

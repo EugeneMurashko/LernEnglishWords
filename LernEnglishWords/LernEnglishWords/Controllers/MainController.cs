@@ -91,7 +91,6 @@ namespace LernEnglishWords.Controllers
 
                 if(!found)
                 {
-
                     using (var preNewContext = new LernEnglishContext())
                     {
                         preNewContext.WordFilter.Add(Filter);
@@ -134,26 +133,24 @@ namespace LernEnglishWords.Controllers
                 }
                 else
                 {
-                    List<AspNetUsers> _user = new List<AspNetUsers>();
+                    AspNetUsers _user = new AspNetUsers();
+                    List<WordFilter> _filterList = new List<WordFilter>();
                     string user_id = User.Identity.GetUserId();
                     using (var context = new LernEnglishContext())
                     {
-                        _user.Add(
-                            context.AspNetUsers
+                        _user = context.AspNetUsers
                             .Where(u => u.Id == user_id)
-                            .FirstOrDefault()
-                            );
+                            .FirstOrDefault();
                     }
-                    Filter.AspNetUsers = _user;
+                    _filterList.Add(Filter);
+                    _user.WordFilter = _filterList;
 
                     using (var newContext = new LernEnglishContext())
                     {
-                        newContext.Entry(Filter).State = EntityState.Modified;
+                        newContext.Entry(_user).State = EntityState.Modified;
                         newContext.SaveChanges();
                     }
                 }
-
-                // Отправляем в БД
             }
             return View("Index");
         }
