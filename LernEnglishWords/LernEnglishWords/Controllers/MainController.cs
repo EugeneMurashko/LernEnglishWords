@@ -16,6 +16,7 @@ namespace LernEnglishWords.Controllers
         {
             if (Session["Application"] as MyApplication == null)
                 Session["Application"] = MyApplication.GetReference(User.Identity.GetUserId());
+
             return View();
         }
 
@@ -31,25 +32,18 @@ namespace LernEnglishWords.Controllers
             {
                 List<CategoryOfWord> COWList;
                 List<PartOfSpeech> POSList;
+
                 using (var context = new LernEnglishContext())
                 {
-                    COWList = context.CategoryOfWord
-                        .ToList();
-                    POSList = context.PartOfSpeech
-                        .ToList();
+                    COWList = context.CategoryOfWord.ToList();
+                    POSList = context.PartOfSpeech.ToList();
                 }
 
                 List<string> pos = new List<string>();
-                foreach (var s in POSs)
-                {
-                    pos.Add(s);
-                }
+                pos.AddRange(POSs);
 
                 List<string> cow = new List<string>();
-                foreach (var s in COWs)
-                {
-                    cow.Add(s);
-                }
+                cow.AddRange(COWs);
 
                 List<WordFilter> filterList = new List<WordFilter>();
                 using (var context = new LernEnglishContext())
@@ -64,6 +58,7 @@ namespace LernEnglishWords.Controllers
 
                 bool found = false;
                 WordFilter Filter = new WordFilter();
+
                 foreach (var filter in filterList)
                 {
                     List<string> s = new List<string>();
@@ -105,7 +100,9 @@ namespace LernEnglishWords.Controllers
                         AspNetUsers _User = context.AspNetUsers
                             .Where(u => u.Id == user_id)
                             .FirstOrDefault();
+
                         _User.WordFilter.Add(Filter);
+
                         context.Entry<AspNetUsers>(_User).State = EntityState.Modified;
                         context.SaveChanges();
 
@@ -115,7 +112,9 @@ namespace LernEnglishWords.Controllers
                             CategoryOfWord _CategoryOfWord = context.CategoryOfWord
                                 .Where(c => c.Name == _cow)
                                 .FirstOrDefault();
+
                             _CategoryOfWord.WordFilter.Add(Filter);
+
                             context.Entry<CategoryOfWord>(_CategoryOfWord).State = EntityState.Modified;
                             context.SaveChanges();
                         }
@@ -125,7 +124,9 @@ namespace LernEnglishWords.Controllers
                             PartOfSpeech _PartOfSpeech = context.PartOfSpeech
                                 .Where(c => c.Name == _pos)
                                 .FirstOrDefault();
+
                             _PartOfSpeech.WordFilter.Add(Filter);
+
                             context.Entry<PartOfSpeech>(_PartOfSpeech).State = EntityState.Modified;
                             context.SaveChanges();
                         }
@@ -136,18 +137,25 @@ namespace LernEnglishWords.Controllers
                     AspNetUsers _user = new AspNetUsers();
                     List<WordFilter> _filterList = new List<WordFilter>();
                     string user_id = User.Identity.GetUserId();
+
                     using (var context = new LernEnglishContext())
                     {
                         _user = context.AspNetUsers
                             .Where(u => u.Id == user_id)
                             .FirstOrDefault();
                     }
+
                     _filterList.Add(Filter);
                     _user.WordFilter = _filterList;
 
                     using (var newContext = new LernEnglishContext())
                     {
-                        newContext.Entry(_user).State = EntityState.Modified;
+                        newContext.Entry(_user).State = Filter.AspNetUsers
+                            .Where(u => u.Id == user_id)
+                            .First()
+                            .Equals(null)
+                            ? EntityState.Modified: EntityState.Unchanged;
+
                         newContext.SaveChanges();
                     }
                 }
@@ -155,30 +163,21 @@ namespace LernEnglishWords.Controllers
             return View("Index");
         }
 
-
-
         // Выводить недавние фильтры, либо один - последний
         // Скопировать логику с WordFiltres
         [Authorize]
-        public ActionResult Continue()// поработать над названием
+        public ActionResult Continue() // ТЗ Поработать над названием
         {
             if(Session["Application"] as MyApplication == null)
                 Session["Application"] = MyApplication.GetReference(User.Identity.GetUserId());
+
             string userId = User.Identity.GetUserId();
 
+            // ТЗ
             // Получаем список фильтров, которые можем продолжить изучать
             // Если таких нет то возвращаем другое частичное представление,
             // в котором есть возможность добавить новый фильтр
             return PartialView(/*new List<WordFiltres>()*/);
-        }
-
-        private bool checkData(int id, List<PartOfSpeech> POS, string[] poss)
-        {
-            throw new NotImplementedException();
-        }
-        private bool checkData(int id, List<CategoryOfWord> COW, string[] cows)
-        {
-            throw new NotImplementedException();
         }
 
         public ActionResult AddNewFilter()
@@ -244,7 +243,6 @@ namespace LernEnglishWords.Controllers
                 .FirstOrDefault();
 
             List<WordFilter> wordFList = _User.WordFilter.ToList();
-                
 
             return PartialView(wordFList);
         }
@@ -254,10 +252,10 @@ namespace LernEnglishWords.Controllers
         {
             if (Session["Application"] as MyApplication == null)
                 Session["Application"] = MyApplication.GetReference(User.Identity.GetUserId());
+
             return PartialView();
         }
 
-        // сверить функционал с братомблизнецом
         [Authorize]
         public ActionResult Application()
         {
@@ -270,7 +268,7 @@ namespace LernEnglishWords.Controllers
             if (app.WordFilter == 0)
                 return RedirectToAction("Index");
 
-            WordFilter wFilter = Repository.Select<WordFilter>() // Создать отдельный метод в репозитории RepositoryWordFilter.SelectWithPartOfSpeechAndCategoryOfWord
+            WordFilter wFilter = Repository.Select<WordFilter>() // ТЗ Создать отдельный метод в репозитории RepositoryWordFilter.SelectWithPartOfSpeechAndCategoryOfWord
                     .Where(c => c.Id == app.WordFilter)
                     .Select(c => new
                     {
@@ -307,16 +305,14 @@ namespace LernEnglishWords.Controllers
             MyApplication app = MyApplication.GetReference(User.Identity.GetUserId());
 
             // Задача.
-            // 1. Спросить: Начать новое. 
-            // 2. Или продолжить старое.
+            // 1. Спросить: Начать новое? 
+            // 2. Или продолжить старое?
             // 3. Предоставить информацию.
             if (app.WordFilter == 0 || app.WordFilter != WordFilterId)
             {
-                // Заглушка
-                app.WordFilter = WordFilterId;
+                app.WordFilter = WordFilterId; // Заглушка
             }
 
-            
             WordFilter wFilter = Repository.Select<WordFilter>()
                     .Where(c => c.Id == WordFilterId)
                     .Select(c => new
@@ -326,7 +322,6 @@ namespace LernEnglishWords.Controllers
                         {
                             _name = o.Name
                         })
-
                     })
                     .AsEnumerable()
                     .Select(an => new WordFilter
@@ -369,17 +364,32 @@ namespace LernEnglishWords.Controllers
                 .ToList()
                 .FirstOrDefault();
 
-            if (app.Cycle == 0 || (!app.wasTheFirstCycle && app.Cycle == 1)) // Первый круг упражнения
+            // Первый круг упражнения
+            if (app.Cycle == 0 || (!app.wasTheFirstCycle && app.Cycle == 1)) 
             {
-                if (result == 1) // Был данн положительный ответ
+                // Был данн положительный ответ
+                if (result == 1) 
                 {
-                    if (progress == null) // Прогресс еще не сохранялся
+                    // Прогресс еще не сохранялся
+                    if (progress == null) 
                     {
-                        using (LernEnglishContext context = new LernEnglishContext()) // переместить в Repository
+                        using (LernEnglishContext context = new LernEnglishContext())
                         {
-                            EnglishWords TempWord = context.Set<EnglishWords>().Where(c => c.WordId == app.CurrentWord.WordId).FirstOrDefault();
+                            EnglishWords TempWord = context.Set<EnglishWords>()
+                                .Where(c => c.WordId == app.CurrentWord.WordId)
+                                .FirstOrDefault();
+
                             app.CurrentWord = TempWord;
-                            Progresses_new Temp = new Progresses_new { WordId = app.CurrentWord.WordId, UserId = app.UserId, Date = DateTime.UtcNow, Repetitions = 1, SuccessfulSeriesOfRepetitions = 100, EnglishWords = app.CurrentWord };
+
+                            Progresses_new Temp = new Progresses_new {
+                                WordId = app.CurrentWord.WordId,
+                                UserId = app.UserId,
+                                Date = DateTime.UtcNow,
+                                Repetitions = 1,
+                                SuccessfulSeriesOfRepetitions = 100,
+                                EnglishWords = app.CurrentWord
+                            };
+
                             context.Entry(Temp).State = EntityState.Added;
                             context.SaveChanges();
                         }
@@ -395,13 +405,15 @@ namespace LernEnglishWords.Controllers
 
                         return "skipWord";
                     }
-                    else if (progress.Repetitions == 0) // Строка была создана ранее, но без прогресса
+                    // Строка была создана ранее, но без прогресса
+                    else if (progress.Repetitions == 0) 
                     {
-                        using (LernEnglishContext context = new LernEnglishContext()) // переместить в Repository
+                        using (LernEnglishContext context = new LernEnglishContext())
                         {
                             progress.Date = DateTime.UtcNow;
                             progress.Repetitions = 1;
                             progress.SuccessfulSeriesOfRepetitions = 100;
+
                             context.Entry(progress).State = EntityState.Modified;
                             context.SaveChanges();
                         }
@@ -417,13 +429,15 @@ namespace LernEnglishWords.Controllers
 
                         return "skipWord";
                     }
-                    else if (progress.Repetitions >= 1) // Слово уже изучалось ранее
+                    // Слово уже изучалось ранее
+                    else if (progress.Repetitions >= 1) 
                     {
-                        using (LernEnglishContext context = new LernEnglishContext()) // переместить в Repository
+                        using (LernEnglishContext context = new LernEnglishContext())
                         {
                             progress.Date = DateTime.UtcNow;
                             progress.Repetitions = progress.Repetitions + 1;
                             progress.SuccessfulSeriesOfRepetitions = progress.SuccessfulSeriesOfRepetitions + 1;
+
                             context.Entry(progress).State = EntityState.Modified;
                             context.SaveChanges();
                         }
@@ -433,31 +447,49 @@ namespace LernEnglishWords.Controllers
                         return "Error";
                     }
                 }
-                else if (result <= 0) // Был данн неверный ответ
+                // Был данн неверный ответ
+                else if (result <= 0) 
                 {
-                    if (progress == null) // // Прогресс еще не сохранялся
+                    // Прогресс еще не сохранялся
+                    if (progress == null)
                     {
-                        using (LernEnglishContext context = new LernEnglishContext()) // переместить в Repository
+                        using (LernEnglishContext context = new LernEnglishContext()) 
                         {
-                            EnglishWords TempWord = context.Set<EnglishWords>().Where(c => c.WordId == app.CurrentWord.WordId).FirstOrDefault();
+                            EnglishWords TempWord = context.Set<EnglishWords>()
+                                .Where(c => c.WordId == app.CurrentWord.WordId)
+                                .FirstOrDefault();
+
                             app.CurrentWord = TempWord;
-                            Progresses_new Temp = new Progresses_new { WordId = app.CurrentWord.WordId, UserId = app.UserId, Date = DateTime.UtcNow, Repetitions = 1, SuccessfulSeriesOfRepetitions = 0, EnglishWords = app.CurrentWord };
+
+                            Progresses_new Temp = new Progresses_new
+                            {
+                                WordId = app.CurrentWord.WordId,
+                                UserId = app.UserId,
+                                Date = DateTime.UtcNow,
+                                Repetitions = 1,
+                                SuccessfulSeriesOfRepetitions = 0,
+                                EnglishWords = app.CurrentWord
+                            };
+
                             context.Entry(Temp).State = EntityState.Added;
                             context.SaveChanges();
                         }
+
                         app.ListOfWordList[app.Cycle + 1].Add(app.CurrentWord);
                     }
                     else if (progress.Repetitions >= 0)
                     {
-                        using (LernEnglishContext context = new LernEnglishContext()) // переместить в Repository
+                        using (LernEnglishContext context = new LernEnglishContext())
                         {
                             progress.Date = DateTime.UtcNow;
                             progress.Repetitions = progress.Repetitions + 1;
                             progress.SuccessfulSeriesOfRepetitions = 0;
+
                             context.Entry(progress).State = EntityState.Modified;
                             context.SaveChanges();
                         }
-                        app.ListOfWordList[app.Cycle + 1].Add(app.CurrentWord); // убрал
+
+                        app.ListOfWordList[app.Cycle + 1].Add(app.CurrentWord);
                     }
                     else
                     {
@@ -465,37 +497,53 @@ namespace LernEnglishWords.Controllers
                     }
                 }
             }
-            else if (app.Cycle == 1 && result == 1 && app.WordListCycle0.Where(x => x == app.CurrentWord).FirstOrDefault() == null) // Это слова второго круга которых не было на первом круге
+            // Это слова второго круга которых не было на первом круге
+            else if (app.Cycle == 1 && result == 1 && app.WordListCycle0.Where(x => x == app.CurrentWord).FirstOrDefault() == null)
             {
                 if (progress == null)
                 {
-                    using (LernEnglishContext context = new LernEnglishContext()) // переместить в Repository
+                    using (LernEnglishContext context = new LernEnglishContext())
                     {
-                        EnglishWords TempWord = context.Set<EnglishWords>().Where(c => c.WordId == app.CurrentWord.WordId).FirstOrDefault();
+                        EnglishWords TempWord = context.Set<EnglishWords>()
+                            .Where(c => c.WordId == app.CurrentWord.WordId)
+                            .FirstOrDefault();
+
                         app.CurrentWord = TempWord;
-                        Progresses_new Temp = new Progresses_new { WordId = app.CurrentWord.WordId, UserId = app.UserId, Date = DateTime.UtcNow, Repetitions = 1, SuccessfulSeriesOfRepetitions = 100, EnglishWords = app.CurrentWord };
+
+                        Progresses_new Temp = new Progresses_new
+                        {
+                            WordId = app.CurrentWord.WordId,
+                            UserId = app.UserId,
+                            Date = DateTime.UtcNow,
+                            Repetitions = 1,
+                            SuccessfulSeriesOfRepetitions = 100,
+                            EnglishWords = app.CurrentWord
+                        };
+
                         context.Entry(Temp).State = EntityState.Added;
                         context.SaveChanges();
                     }
                 }
                 else if (progress.Repetitions == 0)
                 {
-                    using (LernEnglishContext context = new LernEnglishContext()) // переместить в Repository
+                    using (LernEnglishContext context = new LernEnglishContext())
                     {
                         progress.Date = DateTime.UtcNow;
                         progress.Repetitions = 1;
                         progress.SuccessfulSeriesOfRepetitions = 100;
+
                         context.Entry(progress).State = EntityState.Modified;
                         context.SaveChanges();
                     }
                 }
                 else
                 {
-                    using (LernEnglishContext context = new LernEnglishContext()) // переместить в Repository
+                    using (LernEnglishContext context = new LernEnglishContext())
                     {
                         progress.Date = DateTime.UtcNow;
                         progress.Repetitions++;
                         progress.SuccessfulSeriesOfRepetitions++;
+
                         context.Entry(progress).State = EntityState.Modified;
                         context.SaveChanges();
                     }
@@ -504,13 +552,15 @@ namespace LernEnglishWords.Controllers
             }
             else if (app.Cycle >= 1 && app.Cycle <= 4) 
             {
-                using (LernEnglishContext context = new LernEnglishContext()) // переместить в Repository
+                using (LernEnglishContext context = new LernEnglishContext())
                 {
                     progress.Date = DateTime.UtcNow;
+
                     context.Entry(progress).State = EntityState.Modified;
                     context.SaveChanges();
                 }
-                if(result <= 0 && app.Cycle <= 3) // Добавляем слово на следующий круг, если результат повторения отрицательный и если это не полследний круг
+                // Добавляем слово на следующий круг, когда результат повторения отрицательный и при этом это не полследний круг
+                if (result <= 0 && app.Cycle <= 3) 
                     app.ListOfWordList[app.Cycle + 1].Add(app.CurrentWord);
             }
             else
@@ -525,6 +575,7 @@ namespace LernEnglishWords.Controllers
         private EnglishWords GetNewWord()
         {
             MyApplication app = MyApplication.GetReference(User.Identity.GetUserId());
+
             // Находим все слова, которые еще на изучении.
             List<Progresses_new> TempProgressList = Repository.Select<Progresses_new>()
                     .Where(c => c.UserId == app.UserId)
@@ -562,7 +613,8 @@ namespace LernEnglishWords.Controllers
                     if (word.WordId == progress.WordId)
                         flag = false;
                 }
-                if (flag) // Добавляем слово, если не было найдено ни одного совпадения
+                // Добавляем слово, если не было найдено ни одного совпадения
+                if (flag) 
                 {
                     /*app.WordListCycle0.Add(word);
                     count++;
@@ -621,19 +673,24 @@ namespace LernEnglishWords.Controllers
         {
             MyApplication app = MyApplication.GetReference(User.Identity.GetUserId());
 
-            if (app.Cycle == 0) // первый круг - круг отбора слов для тренировки
+            // первый круг - круг отбора слов для тренировки
+            if (app.Cycle == 0) 
             {
                 if (app.Index == -100)
                 { // самое начало тренировки
 
-                    List<EnglishWords> wordList = GetAllInProgressWords(); // Получаем все слова, которые находятся на изучении
+                    // Получаем все слова, которые находятся на изучении
+                    List<EnglishWords> wordList = GetAllInProgressWords();
 
-                    if (wordList.Count >= app.Complexity) // Если уже есть достаточное количество слов, чтобы перейти на второй этап
+                    // Если уже есть достаточное количество слов, чтобы перейти на второй этап
+                    if (wordList.Count >= app.Complexity) 
                     {
                         app.WordListCycle1
                             .AddRange(wordList.Take(app.Complexity));
+
                         app.Cycle = 1;
                         app.Index = 0;
+
                         return;
                     }
                     else
@@ -645,13 +702,16 @@ namespace LernEnglishWords.Controllers
                         return;
                     }
                 }
-                else if (app.Complexity == app.WordListCycle1.Count) // Первый круг. Последнее слово. (при завершении первого круга, второй полностью заполняется)
+                // Первый круг. Последнее слово. (при завершении первого круга, второй полностью заполняется)
+                else if (app.Complexity == app.WordListCycle1.Count) 
                 {
                     app.Cycle++;
                     app.Index = 0;
+
                     return;
                 }
-                else // Первый круг. Не первое слово и не последнее слово.
+                // Первый круг. Не первое слово и не последнее слово.
+                else
                 {
                     app.WordListCycle0.Add(GetNewWord());
                     app.Index++;
@@ -674,15 +734,18 @@ namespace LernEnglishWords.Controllers
         {
             if (Session["Application"] as MyApplication == null)
                 Session["Application"] = MyApplication.GetReference(User.Identity.GetUserId());
+
             MyApplication app = MyApplication.GetReference(User.Identity.GetUserId());
 
-            var check = DemoSet(result); // возвращает состояние сохранения данных
+            // возвращает состояние сохранения данных
+            var check = DemoSet(result); 
 
             DemoGetNextWord();
 
             if (app.Cycle > 4 || app.ListOfWordList[app.Cycle].Count == 0)
             {
                 MyApplication.Delete();
+
                 return View("Index");
             }
             return PartialView(app);
