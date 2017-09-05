@@ -198,7 +198,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MainController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
@@ -240,6 +239,10 @@
     <Compile Include="Migrations\201708071503532_COWandPOSwhithFilter.Designer.cs">
       <DependentUpon>201708071503532_COWandPOSwhithFilter.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201709031613150_TheFirstBigCleaning.cs" />
+    <Compile Include="Migrations\201709031613150_TheFirstBigCleaning.Designer.cs">
+      <DependentUpon>201709031613150_TheFirstBigCleaning.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\MyApplication.cs" />
@@ -247,17 +250,14 @@
     <Compile Include="Models\AspNetUserClaims.cs" />
     <Compile Include="Models\AspNetUserLogins.cs" />
     <Compile Include="Models\AspNetUsers.cs" />
-    <Compile Include="Models\Blocks.cs" />
     <Compile Include="Models\EnglishWords.cs" />
     <Compile Include="Models\HistoryOfExercises.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\LernEnglishContext.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\PartOfSpeech.cs" />
-    <Compile Include="Models\Progresses.cs" />
     <Compile Include="Models\Progresses_new.cs" />
     <Compile Include="Models\Repository.cs" />
-    <Compile Include="Models\Temp.cs" />
     <Compile Include="Models\WordFilter.cs" />
     <Compile Include="Models\СategoryOfWord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -381,9 +381,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
@@ -404,11 +401,6 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Home\AddBlock.cshtml" />
-    <Content Include="Views\Home\BlockSearch.cshtml" />
-    <Content Include="Views\Home\AddNewBlock.cshtml" />
-    <Content Include="Views\Home\DeleteBlock.cshtml" />
-    <Content Include="Views\Home\BlockList.cshtml" />
     <Content Include="Views\Main\Index.cshtml" />
     <Content Include="Views\Main\Application.cshtml" />
     <Content Include="Views\Main\Continue.cshtml" />
@@ -456,6 +448,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708071503532_COWandPOSwhithFilter.resx">
       <DependentUpon>201708071503532_COWandPOSwhithFilter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201709031613150_TheFirstBigCleaning.resx">
+      <DependentUpon>201709031613150_TheFirstBigCleaning.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
