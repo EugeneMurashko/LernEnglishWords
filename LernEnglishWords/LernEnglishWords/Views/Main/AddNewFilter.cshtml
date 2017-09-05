@@ -1,12 +1,12 @@
 ﻿        @{ 
             List<string> POS = new List<string>();
-            foreach (var pos in ViewBag.PartOfSpeech)
+            foreach (var pos in ViewBag.PartOfSpeech as List<LernEnglishWords.Models.PartOfSpeech>)
             {
                 POS.Add(pos.Name);
             }
 
             List<string> COW = new List<string>();
-            foreach (var cow in ViewBag.CategoryOfWord)
+            foreach (var cow in ViewBag.CategoryOfWord as List<LernEnglishWords.Models.CategoryOfWord>)
             {
                 COW.Add(cow.Name);
             }
@@ -20,13 +20,13 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Добавить новый фильтр</h4>
             </div>
-            @using (Html.BeginForm())
+            @using (Html.BeginForm("Index", "Main"))
             {
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-xs-5">
                             <div class="form-group">
-                                @Html.ListBox("countries", new MultiSelectList(POS),
+                                @Html.ListBox("POSs", new MultiSelectList(POS),
                                     new
                                     {
                                         @class = "selectpicker",
@@ -40,7 +40,7 @@
                     <div class="row">
                         <div class="col-xs-5">
                             <div class="form-group">
-                                @Html.ListBox("countries1", new MultiSelectList(COW /* ViewBag.CategoryOfWord as SelectList*/),
+                                @Html.ListBox("COWs", new MultiSelectList(COW /* ViewBag.CategoryOfWord as SelectList*/),
                                     new
                                     {
                                         @class = "selectpicker",
