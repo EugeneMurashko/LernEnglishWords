@@ -1,14 +1,14 @@
 ﻿        @{ 
-            List<string> POS = new List<string>();
+            List<string> PartOfSpeechList = new List<string>();
             foreach (var pos in ViewBag.PartOfSpeech as List<LernEnglishWords.Models.PartOfSpeech>)
             {
-                POS.Add(pos.Name);
+                PartOfSpeechList.Add(pos.Name);
             }
 
-            List<string> COW = new List<string>();
+            List<string> CategoryOfWord = new List<string>();
             foreach (var cow in ViewBag.CategoryOfWord as List<LernEnglishWords.Models.CategoryOfWord>)
             {
-                COW.Add(cow.Name);
+                CategoryOfWord.Add(cow.Name);
             }
         }
     <!-- Modal -->
@@ -26,7 +26,7 @@
                     <div class="row">
                         <div class="col-xs-5">
                             <div class="form-group">
-                                @Html.ListBox("POSs", new MultiSelectList(POS),
+                                @Html.ListBox("_part_of_speech", new MultiSelectList(PartOfSpeechList),
                                     new
                                     {
                                         @class = "selectpicker",
@@ -40,7 +40,7 @@
                     <div class="row">
                         <div class="col-xs-5">
                             <div class="form-group">
-                                @Html.ListBox("COWs", new MultiSelectList(COW /* ViewBag.CategoryOfWord as SelectList*/),
+                                @Html.ListBox("_category_of_word", new MultiSelectList(CategoryOfWord),
                                     new
                                     {
                                         @class = "selectpicker",

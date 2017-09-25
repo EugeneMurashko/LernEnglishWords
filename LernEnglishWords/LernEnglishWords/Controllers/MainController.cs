@@ -23,27 +23,27 @@ namespace LernEnglishWords.Controllers
         // 1.   При перезагрузке вызывается именно этот метод.
         // 1.1. Описать проверку, обходящую повторный запрос к БД.
         [HttpPost]
-        public ActionResult Index(string[] POSs, string[] COWs)
+        public ActionResult Index(string[] _part_of_speech, string[] _category_of_word)
         {
             if (Session["Application"] as MyApplication == null)
                 Session["Application"] = MyApplication.GetReference(User.Identity.GetUserId());
 
-            if (POSs != null && COWs != null)
+            if (_part_of_speech != null && _category_of_word != null)
             {
-                List<CategoryOfWord> COWList;
-                List<PartOfSpeech> POSList;
+                List<PartOfSpeech> PartOfSpeechList;
+                List<CategoryOfWord> CategoryOfWordList;
 
                 using (var context = new LernEnglishContext())
                 {
-                    COWList = context.CategoryOfWord.ToList();
-                    POSList = context.PartOfSpeech.ToList();
+                    PartOfSpeechList = context.PartOfSpeech.ToList();
+                    CategoryOfWordList = context.CategoryOfWord.ToList();
                 }
 
                 List<string> pos = new List<string>();
-                pos.AddRange(POSs);
+                pos.AddRange(_part_of_speech);
 
                 List<string> cow = new List<string>();
-                cow.AddRange(COWs);
+                cow.AddRange(_category_of_word);
 
                 List<WordFilter> filterList = new List<WordFilter>();
                 using (var context = new LernEnglishContext())
@@ -107,7 +107,7 @@ namespace LernEnglishWords.Controllers
                         context.SaveChanges();
 
 
-                        foreach (var _cow in COWs)
+                        foreach (var _cow in _category_of_word)
                         {
                             CategoryOfWord _CategoryOfWord = context.CategoryOfWord
                                 .Where(c => c.Name == _cow)
@@ -119,7 +119,7 @@ namespace LernEnglishWords.Controllers
                             context.SaveChanges();
                         }
 
-                        foreach (var _pos in POSs)
+                        foreach (var _pos in _part_of_speech)
                         {
                             PartOfSpeech _PartOfSpeech = context.PartOfSpeech
                                 .Where(c => c.Name == _pos)
@@ -348,9 +348,9 @@ namespace LernEnglishWords.Controllers
             MyApplication app = MyApplication.GetReference(User.Identity.GetUserId());
 
             // возвращает состояние сохранения данных
-            var check = app.DemoSet(result); 
+            var check = app.SetData(result); 
 
-            app.DemoGetNextWord();
+            app.GetNextWord();
 
             if (app.Cycle > 4 || app.ListOfWordList[app.Cycle].Count == 0)
             {
@@ -369,7 +369,7 @@ namespace LernEnglishWords.Controllers
 
             MyApplication app = MyApplication.GetReference(User.Identity.GetUserId());
 
-            app.DemoGetNextWord();
+            app.GetNextWord();
 
             return PartialView("App_TempName", app);
         }

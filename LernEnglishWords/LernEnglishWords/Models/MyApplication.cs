@@ -76,7 +76,7 @@ namespace LernEnglishWords.Models
             app = null;
         }
 
-        public string DemoSet(int result)
+        public string SetData(int result)
         {
             var progress = Repository.Select<Progresses_new>()
                 .Where(c => c.WordId == this.CurrentWord.WordId && c.UserId == this.UserId)
@@ -308,6 +308,64 @@ namespace LernEnglishWords.Models
             return "Ok";
         }
 
+        public void GetNextWord()
+        {
+            // первый круг - круг отбора слов для тренировки
+            if (this.Cycle == 0)
+            {
+                if (this.Index == -100)
+                { // самое начало тренировки
+
+                    // Получаем все слова, которые находятся на изучении
+                    List<EnglishWords> wordList = GetAllInProgressWords();
+
+                    // Если уже есть достаточное количество слов, чтобы перейти на второй этап
+                    if (wordList.Count >= this.Complexity)
+                    {
+                        this.WordListCycle1
+                            .AddRange(wordList.Take(this.Complexity));
+
+                        this.Cycle = 1;
+                        this.Index = 0;
+
+                        return;
+                    }
+                    else
+                    {
+                        this.WordListCycle1.AddRange(wordList);
+                        this.WordListCycle0.Add(GetNewWord());
+                        this.Index = 0;
+
+                        return;
+                    }
+                }
+                // Первый круг. Последнее слово. (при завершении первого круга, второй полностью заполняется)
+                else if (this.Complexity == this.WordListCycle1.Count)
+                {
+                    this.Cycle++;
+                    this.Index = 0;
+
+                    return;
+                }
+                // Первый круг. Не первое слово и не последнее слово.
+                else
+                {
+                    this.WordListCycle0.Add(GetNewWord());
+                    this.Index++;
+                }
+            }
+            else
+            {
+                if (this.Index + 1 < this.ListOfWordList[this.Cycle].Count)
+                    this.Index++;
+                else
+                {
+                    this.Cycle++;
+                    this.Index = 0;
+                }
+            }
+        }
+
         // Возращает слово, которое еще не изучалось
         private EnglishWords GetNewWord()
         {
@@ -402,62 +460,6 @@ namespace LernEnglishWords.Models
 
             return wordList;
         }
-        public void DemoGetNextWord()
-        {
-            // первый круг - круг отбора слов для тренировки
-            if (this.Cycle == 0)
-            {
-                if (this.Index == -100)
-                { // самое начало тренировки
 
-                    // Получаем все слова, которые находятся на изучении
-                    List<EnglishWords> wordList = GetAllInProgressWords();
-
-                    // Если уже есть достаточное количество слов, чтобы перейти на второй этап
-                    if (wordList.Count >= this.Complexity)
-                    {
-                        this.WordListCycle1
-                            .AddRange(wordList.Take(this.Complexity));
-
-                        this.Cycle = 1;
-                        this.Index = 0;
-
-                        return;
-                    }
-                    else
-                    {
-                        this.WordListCycle1.AddRange(wordList);
-                        this.WordListCycle0.Add(GetNewWord());
-                        this.Index = 0;
-
-                        return;
-                    }
-                }
-                // Первый круг. Последнее слово. (при завершении первого круга, второй полностью заполняется)
-                else if (this.Complexity == this.WordListCycle1.Count)
-                {
-                    this.Cycle++;
-                    this.Index = 0;
-
-                    return;
-                }
-                // Первый круг. Не первое слово и не последнее слово.
-                else
-                {
-                    this.WordListCycle0.Add(GetNewWord());
-                    this.Index++;
-                }
-            }
-            else
-            {
-                if (this.Index + 1 < this.ListOfWordList[this.Cycle].Count)
-                    this.Index++;
-                else
-                {
-                    this.Cycle++;
-                    this.Index = 0;
-                }
-            }
-        }
     }
 }
